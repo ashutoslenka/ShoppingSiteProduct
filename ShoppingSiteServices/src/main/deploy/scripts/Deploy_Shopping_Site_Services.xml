@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+
+<project name="Install" default="install1">
+	<tstamp />
+
+	<property file="${basedir}\src\main\deploy\properties\ShoppingSiteServices.properties" />
+	<property name="wasHome.dir" location="${wasHome_dir}" />
+	<property name="ws.ext.dirs" location="${wasHome_dir}" />
+	<property name="was.install.root" value="${wasHome_dir}" />
+	<property name="user.install.root" value="${Domain_path}" />
+
+	<path id="was.runtime">
+		<fileset dir="${wasHome_dir}\endorsed_apis">
+			<include name="**\*.jar" />
+		</fileset>
+		<fileset dir="${wasHome_dir}\lib">
+			<include name="**\*.jar" />
+		</fileset>
+		<fileset dir="${wasHome_dir}\plugins">
+			<include name="**\*.jar" />
+		</fileset>
+	</path>
+
+	<property name="was_cp" value="${toString:was.runtime}" />
+
+	<echo>HomeDir :  ${wasHome_dir}</echo>
+
+	<!-- WebSphere tasks -->
+	<taskdef name="wsadmin" classname="com.ibm.websphere.ant.tasks.WsAdmin" classpath="${wasHome_dir}\plugins\com.ibm.ws.runtime.jar" />
+	<taskdef name="wsStopServer" classname="com.ibm.websphere.ant.tasks.StopServer" classpath="${wasHome_dir}\plugins\com.ibm.ws.runtime.jar" />
+	<taskdef name="wsStartServer" classname="com.ibm.websphere.ant.tasks.StartServer" classpath="${wasHome_dir}\plugins\com.ibm.ws.runtime.jar" />
+	<taskdef name="wsStopApp" classname="com.ibm.websphere.ant.tasks.StopApplication" classpath="${wasHome_dir}\plugins\com.ibm.ws.runtime.jar" />
+	<taskdef name="wsStartApp" classname="com.ibm.websphere.ant.tasks.StartApplication" classpath="${wasHome_dir}\plugins\com.ibm.ws.runtime.jar" />
+	<taskdef name="wsUninstallApp" classname="com.ibm.websphere.ant.tasks.UninstallApplication" classpath="${wasHome_dir}\plugins\com.ibm.ws.runtime.jar" />
+	<taskdef name="wsInstallApp" classname="com.ibm.websphere.ant.tasks.InstallApplication" classpath="${wasHome_dir}\plugins\com.ibm.ws.runtime.jar" />
+
+
+	<!-- delegator -->
+	<target name="install" depends="create.ear,start.server,stop.app,uninstall.app,install.app,start.app" />
+
+	<!--stop.app,Backup.app,export.app,uninstall.app,deploy.app,install.app,propertychanges,start.app-->
+
+	<target name="create.ear">
+		<ear destfile="${basedir}/target/${app_name}.ear" appxml="${basedir}/src/main/deploy/xml/application.xml">
+			<metainf dir="${basedir}/src/main/webapp/META-INF" />
+			<fileset dir="${basedir}/target" includes="${app_name}.war" />
+		</ear>
+	</target>
+
+	<target name="install1">
+		<sshexec host="${was_host}" username="${was_userId}" password="${was_password}" command="${was_ant_install} install" trust="true" />
+	</target>
+
+	<target name="stop.server">
+		<wsadmin wasHome="${wasHome_dir}" command="$AdminControl stopServer ${was_server} ${was_node}" user="${UserID}" password="${Password}" />
+	</target>
+
+	<target name="start.server">
+		<!-- <wsStartServer wasHome="${wasHome_dir}" server="${was_server}" failonerror="true" /> -->
+		<exec dir="${Domain_path}\bin" executable="cmd">
+			<arg line="/c startServer.bat ${was_server} -profileName ${was_profile}" />
+		</exec>
+	</target>
+
+	<target name="start.app">
+		<wsStartApp wasHome="${wasHome_dir}" server="${was_server}" application="${app_name}" failonerror="true" user="${UserID}" password="${Password}" />
+	</target>
+
+	<target name="stop.app">
+		<wsStopApp wasHome="${wasHome_dir}" server="${was_server}" application="${app_name}" user="${UserID}" password="${Password}" />
+	</target>
+
+	<target name="install.app">
+		<!--<wsInstallApp wasHome="${wasHome_dir}" ear="${Installer_dir}/${app_war}" options="{${was_install_options}}" failonerror="true" user="partha" password="partha" />-->
+		<!--<wsInstallApp wasHome="${wasHome_dir}" ear="${Installer_dir}/${app_war}" command="$AdminApp install ${Installer_dir}/${app_war} {${was_install_options}}" failonerror="true" user="partha" password="partha" />-->
+		<exec executable="${Domain_path}\bin\wsadmin.bat" failonerror="true">
+			<arg line="-conntype SOAP -host ${HostName} -port ${SoapPort} -user ${UserID} -password ${Password} -c" />
+			<arg value="$AdminApp install ${Installer_dir}/${app_name}.ear {${was_install_options}}" />
+		</exec>
+	</target>
+
+	<target name="uninstall.app">
+		<wsUninstallApp wasHome="${wasHome_dir}" application="${app_name}" user="${UserID}" password="${Password}" />
+	</target>
+
+	<target name="export.app">
+		<wsadmin wasHome="${wasHome_dir}" command="$AdminApp export ${app_name} ${Installer_dir}\${app_name}.ear" failonerror="false" user="${UserID}" password="${Password}" />
+	</target>
+
+	<target name="backout" depends="stop.server, uninstall.app, reinstall.app, start.server" />
+
+
+	<target name="reinstall.app">
+	</target>
+
+</project>

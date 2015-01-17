@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app id="WebApp_ID" version="3.0"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+	<display-name>ShoppingSiteServices</display-name>
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+	<servlet>
+		<display-name>JAX-RS REST Servlet</display-name>
+		<servlet-name>JAX-RS REST Servlet</servlet-name>
+		<servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+		<init-param>
+			<param-name>com.sun.jersey.spi.container.ResourceFilters</param-name>
+			<param-value>com.sun.jersey.api.container.filter.RolesAllowedResourceFilterFactory</param-value>
+		</init-param>
+
+		<init-param>
+			<param-name>com.sun.jersey.config.property.packages</param-name>
+			<param-value>main.java.shoppingsiteservices.service.Login</param-value>
+		</init-param>
+
+
+		<!-- Uncomment this to use the class AuthenticationFilter as Request Filter 
+			for the security data. You can find the difference after un-commenting this 
+			part and invoking the method getBook() under BancsServiceResource. Only authenticated 
+			users will be allowed to invoke the service ................................. 
+			******************************************************************************************** 
+			<init-param> <param-name>com.sun.jersey.spi.container.ContainerRequestFilters</param-name> 
+			<param-value>main.java.shoppingsiteservices.filters.AuthenticationFilter</param-value> 
+			</init-param> -->
+
+		<!-- Uncomment this to pass a authentication user details for roles allowed 
+			to work. If authentication is enabled. In case you uncomment this comment 
+			the default Resource filters in above init-param to use this for RolesAllowed 
+			***************************************************************************************** 
+			<init-param> <param-name>com.sun.jersey.config.property.packages</param-name> 
+			<param-value>com.tcs.bancs.insurance.service</param-value> </init-param> 
+			<init-param> <param-name>com.sun.jersey.spi.container.ResourceFilters</param-name> 
+			<param-value>main.java.shoppingsiteservices.filters.ResourceFilterFactoryRoles</param-value> 
+			</init-param> -->
+
+		<load-on-startup>1</load-on-startup>
+		<!-- load on startup Should be the last one -->
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>JAX-RS REST Servlet</servlet-name>
+		<url-pattern>/service/*</url-pattern>
+	</servlet-mapping>
+
+	<security-role>
+		<role-name>User</role-name>
+	</security-role>
+
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>customer creation</web-resource-name>
+			<description>URL pattern specifies the URL to which security is applied</description>
+			<url-pattern>/*</url-pattern>
+			<http-method>DELETE</http-method>
+			<http-method>GET</http-method>
+			<http-method>POST</http-method>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>User</role-name>
+			<!-- Uncomment this to allow access to the friend role and for PermitAccess 
+				annotation to work for certain methods used in BancsResource getSecure(). 
+				************************************************************************ 
+				<role-name>friend</role-name> -->
+		</auth-constraint>
+		<user-data-constraint>
+			<description>SSL or MSSL not required</description>
+			<transport-guarantee>CONFIDENTIAL</transport-guarantee>
+		</user-data-constraint>
+	</security-constraint>
+	<!-- Websphere: Security -> Global Policy (Disable Java2 Security) -->
+	<login-config>
+		<auth-method>BASIC</auth-method>
+		<realm-name>defaultWIMFileBasedRealm</realm-name>
+	</login-config>
+</web-app>
