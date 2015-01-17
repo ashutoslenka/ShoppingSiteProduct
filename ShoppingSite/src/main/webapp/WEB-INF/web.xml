@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app id="WebApp_ID" version="3.0"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+	<display-name>ShoppingSite</display-name>
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+	<servlet>
+		<description>Used for Loading the startup properties</description>
+		<display-name>ShoppingSiteStartup</display-name>
+		<servlet-name>ShoppingSiteStartup</servlet-name>
+		<servlet-class>main.java.shoppingsite.startup.ShoppingSiteStartup</servlet-class>
+		<!-- This will call init method of servlet during start up if value > 0 -->
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet>
+		<description>Proxy for the site</description>
+		<display-name>HttpProxyServlet</display-name>
+		<servlet-name>HttpProxyServlet</servlet-name>
+		<servlet-class>main.java.shoppingsite.service.secure.HttpProxyServlet</servlet-class>
+
+		<init-param>
+			<param-name>host</param-name>
+			<param-value>https://localhost:9443/SecureShoppingSite/</param-value>
+		</init-param>
+
+		<init-param>
+			<param-name>certificate</param-name>
+			<param-value>true</param-value>
+		</init-param>
+
+		<init-param>
+			<param-name>log</param-name>
+			<param-value>true</param-value>
+		</init-param>
+
+		<init-param>
+			<param-name>uri</param-name>
+			<param-value>/secure*</param-value>
+		</init-param>
+
+		<init-param>
+			<param-name>keepHeaders</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>HttpProxyServlet</servlet-name>
+		<url-pattern>/secure/*</url-pattern>
+	</servlet-mapping>
+
+	<security-role>
+		<role-name>friend</role-name>
+	</security-role>
+
+	<security-role>
+		<role-name>User</role-name>
+	</security-role>
+
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>secure connection</web-resource-name>
+			<description>URL pattern specifies the URL to which security is applied</description>
+			<url-pattern>/*</url-pattern>
+			<http-method>DELETE</http-method>
+			<http-method>GET</http-method>
+			<http-method>POST</http-method>
+			<http-method>PUT</http-method>
+			<http-method>HEAD</http-method>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>friend</role-name>
+			<role-name>User</role-name>
+		</auth-constraint>
+		<user-data-constraint>
+			<description>SSL or MSSL not required</description>
+			<transport-guarantee>NONE</transport-guarantee>
+		</user-data-constraint>
+	</security-constraint>
+
+</web-app>
