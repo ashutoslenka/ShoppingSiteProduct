@@ -3,7 +3,7 @@ ShoppingSiteServices/service/LoginService/VerifyUser
 <body>
 	<h2>Hello World Team (Partha / Ashutosh)!</h2>
 </body>
-<form action="ShoppingSiteServices/service/LoginService/VerifyUser"
+<form action="secure/service/LoginService/VerifyUser"
 	method="get">
 	<table align="center">
 		<tr />

@@ -23,7 +23,7 @@
 
 		<init-param>
 			<param-name>host</param-name>
-			<param-value>https://localhost:9443/SecureShoppingSite/</param-value>
+			<param-value>https://localhost:9443/ShoppingSiteServices/</param-value>
 		</init-param>
 
 		<init-param>
@@ -43,6 +43,11 @@
 
 		<init-param>
 			<param-name>keepHeaders</param-name>
+			<param-value>true</param-value>
+		</init-param>
+
+		<init-param>
+			<param-name>path</param-name>
 			<param-value>true</param-value>
 		</init-param>
 	</servlet>
