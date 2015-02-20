@@ -1,10 +1,11 @@
 <html>
-ShoppingSiteServices/service/LoginService/VerifyUser
+
 <body>
 	<h2>Hello World Team (Partha / Ashutosh)!</h2>
 </body>
 <form action="secure/service/LoginService/VerifyUser"
 	method="get">
+	<input type="hidden" name="inputString" value="ashutos" />
 	<table align="center">
 		<tr />
 		<tr />

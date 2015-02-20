@@ -27,5 +27,8 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="D:/RND/Softwares/apache-tomcat-7.0.55-windows-x86/apache-tomcat-7.0.55/lib/ojdbc6_g.jar"/>
+	<classpathentry kind="lib" path="D:/RND/Softwares/apache-tomcat-7.0.55-windows-x86/apache-tomcat-7.0.55/lib/servlet-api.jar"/>
+	<classpathentry kind="lib" path="D:/RND/Softwares/jstl-1.2.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
