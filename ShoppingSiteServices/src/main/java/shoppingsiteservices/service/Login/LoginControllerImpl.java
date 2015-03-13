@@ -19,14 +19,14 @@ import org.codehaus.jettison.json.JSONObject;
 @DeclareRoles({ "friend", "User" })
 @Path("/LoginService")
 public class LoginControllerImpl extends LoginController {
-
+	
 	public boolean readAuthenticationData(String strName) {
 		return true;
 	}
 
-	@RolesAllowed("User")
 	@GET
 	@Path("/VerifyUser")
+	@RolesAllowed("User")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.TEXT_PLAIN })
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.TEXT_PLAIN })
 	public String verifyClient(String inputString) {
@@ -54,4 +54,5 @@ public class LoginControllerImpl extends LoginController {
 		customer.setFirstName("ShoppingUser");
 		return customer;
 	}
+	
 }
