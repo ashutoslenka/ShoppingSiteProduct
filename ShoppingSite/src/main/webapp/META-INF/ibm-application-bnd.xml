@@ -7,7 +7,7 @@
    version="1.0">
 
     <security-role name="User">
-        <user name="partha" />
+        <user name="ashutos" />
         <group name="User" />
     </security-role>
 </application-bnd>

@@ -34,7 +34,6 @@
 	<taskdef name="wsUninstallApp" classname="com.ibm.websphere.ant.tasks.UninstallApplication" classpath="${wasHome_dir}\plugins\com.ibm.ws.runtime.jar" />
 	<taskdef name="wsInstallApp" classname="com.ibm.websphere.ant.tasks.InstallApplication" classpath="${wasHome_dir}\plugins\com.ibm.ws.runtime.jar" />
 
-
 	<!-- delegator -->
 	<target name="install" depends="create.ear,start.server,stop.app,uninstall.app,install.app,start.app" />
 
