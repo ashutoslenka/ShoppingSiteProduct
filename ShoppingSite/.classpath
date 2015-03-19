@@ -23,5 +23,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="D:/RND/Softwares/c3p0-0.9.1.2.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
