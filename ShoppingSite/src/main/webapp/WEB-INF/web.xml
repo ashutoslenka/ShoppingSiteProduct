@@ -53,7 +53,6 @@
 	</servlet>
 
 	<servlet>
-		<description>Proxy for the site</description>
 		<display-name>HttpProxyServlet</display-name>
 		<servlet-name>HttpProxyServlet</servlet-name>
 		<servlet-class>main.java.shoppingsite.service.secure.HttpProxyServlet</servlet-class>
@@ -99,11 +98,12 @@
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
+        
     <servlet-mapping>
         <servlet-name>login</servlet-name>
         <url-pattern>/</url-pattern>
-    </servlet-mapping>           
-	
+    </servlet-mapping>
+  	
 	<security-role>
 		<role-name>friend</role-name>
 	</security-role>
@@ -132,5 +132,5 @@
 			<transport-guarantee>NONE</transport-guarantee>
 		</user-data-constraint>
 	</security-constraint>
-	
+		
 </web-app>
