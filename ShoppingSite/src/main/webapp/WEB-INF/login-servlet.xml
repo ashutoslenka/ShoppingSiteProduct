@@ -23,7 +23,7 @@
           class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
             <list>
-                <value>file:///C:/Users/oic/Documents/Softwares/Workspace/ShoppingSiteProduct/ShoppingSite/src/main/resources/service/ShoppingSite.properties</value>
+                <value>classpath:ShoppingSite.properties</value>
             </list>
         </property>
     </bean>
